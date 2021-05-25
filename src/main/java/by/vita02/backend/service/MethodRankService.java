@@ -2,8 +2,6 @@ package by.vita02.backend.service;
 
 import by.vita02.backend.enums.ProjectType;
 
-import java.util.Arrays;
-
 public class MethodRankService {
     public ProjectType calculate(int[][] matrix){
         double max = -1;
@@ -19,7 +17,7 @@ public class MethodRankService {
         }
         for(int j = 0; j<m; j++){
             for(int i = 0; i<n; i++) {
-                weights[j] += matrix[i][j] / sums[i];
+                weights[j] += (double) matrix[i][j] / sums[i];
             }
             weights[j] /= n;
             if (weights[j] > max){
