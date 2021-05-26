@@ -14,6 +14,9 @@ import com.google.gson.Gson;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +35,8 @@ public class ManagerService {
   }
 
   private void handle(BufferedWriter bufferedWriter, BufferedReader bufferedReader)
-      throws IOException {
+          throws IOException, NoSuchAlgorithmException {
+    MessageDigest md5 = MessageDigest.getInstance("MD5");
     ClientDao clientDao = new ClientDao();
     OrderDao orderDao = new OrderDao();
     AdminDao adminDao = new AdminDao();
@@ -45,7 +49,12 @@ public class ManagerService {
           String nickName = bufferedReader.readLine();
           String password = bufferedReader.readLine();
           Client client = clientDao.findByNick(nickName);
-          if (client != null && client.getPassword().equals(password)) {
+          byte[] bytes = md5.digest(password.getBytes());
+          String pass = "";
+          for(byte b:bytes){
+            pass += b;
+          }
+          if (client != null && client.getPassword().equals(pass)){
             bufferedWriter.write(gson.toJson(client) + "\n");
           } else {
             Admin admin = adminDao.findByNickName(nickName);
@@ -59,6 +68,12 @@ public class ManagerService {
       case ("saveClient"):
         {
           Client client = gson.fromJson(bufferedReader.readLine(), Client.class);
+          byte[] bytes = md5.digest(client.getPassword().getBytes());
+          String pass = "";
+          for(byte b:bytes){
+            pass += b;
+          }
+          client.setPassword(pass);
           client.setOrders(null);
           clientDao.save(client);
         }
