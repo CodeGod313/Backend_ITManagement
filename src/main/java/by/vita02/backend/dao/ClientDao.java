@@ -1,10 +1,13 @@
 package by.vita02.backend.dao;
 
+import by.vita02.backend.order.Order;
 import by.vita02.backend.users.Client;
 import by.vita02.backend.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+import java.util.List;
 
 public class ClientDao {
   public Client findById(Long id) {
@@ -45,5 +48,12 @@ public class ClientDao {
     session.delete(client);
     tx1.commit();
     session.close();
+  }
+  public List<Client> getAll() {
+    Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+    Query query = session.createQuery("from Client ");
+    List<Client> orders= query.list();
+    session.close();
+    return orders;
   }
 }

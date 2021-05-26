@@ -3,6 +3,7 @@ package by.vita02.backend.utils;
 import by.vita02.backend.company.Company;
 import by.vita02.backend.order.Order;
 import by.vita02.backend.result.ITProject;
+import by.vita02.backend.users.Admin;
 import by.vita02.backend.users.Client;
 import by.vita02.backend.users.User;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,7 @@ public class HibernateSessionFactoryUtil {
         configuration.addAnnotatedClass(Company.class);
         configuration.addAnnotatedClass(Order.class);
         configuration.addAnnotatedClass(ITProject.class);
+        configuration.addAnnotatedClass(Admin.class);
         StandardServiceRegistryBuilder builder =
             new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
         sessionFactory = configuration.buildSessionFactory(builder.build());

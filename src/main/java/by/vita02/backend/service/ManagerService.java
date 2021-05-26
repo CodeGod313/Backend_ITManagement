@@ -1,5 +1,6 @@
 package by.vita02.backend.service;
 
+import by.vita02.backend.dao.AdminDao;
 import by.vita02.backend.dao.ClientDao;
 import by.vita02.backend.dao.OrderDao;
 import by.vita02.backend.dto.QueryDTO;
@@ -7,6 +8,7 @@ import by.vita02.backend.dto.MatrixDTO;
 import by.vita02.backend.enums.ProjectType;
 import by.vita02.backend.order.Order;
 import by.vita02.backend.result.ITProject;
+import by.vita02.backend.users.Admin;
 import by.vita02.backend.users.Client;
 import com.google.gson.Gson;
 
@@ -33,6 +35,7 @@ public class ManagerService {
       throws IOException {
     ClientDao clientDao = new ClientDao();
     OrderDao orderDao = new OrderDao();
+    AdminDao adminDao = new AdminDao();
     Gson gson = new Gson();
     String query = bufferedReader.readLine();
     QueryDTO queryDTO = gson.fromJson(query, QueryDTO.class);
@@ -45,7 +48,10 @@ public class ManagerService {
           if (client != null && client.getPassword().equals(password)) {
             bufferedWriter.write(gson.toJson(client) + "\n");
           } else {
-            bufferedWriter.write("refuse" + "\n");
+            Admin admin = adminDao.findByNickName(nickName);
+            if (admin != null && admin.getPassword().equals(password)) {
+              bufferedWriter.write("AsAdmin" + "\n");
+            } else bufferedWriter.write("refuse" + "\n");
           }
           bufferedWriter.flush();
         }
@@ -101,11 +107,33 @@ public class ManagerService {
           bufferedWriter.flush();
         }
         break;
-      case ("getAllOrders"):{
-        List<Order> orders = orderDao.getAll();
-        bufferedWriter.write(gson.toJson(orders) + "\n");
+      case ("getAllOrders"):
+        {
+          List<Order> orders = orderDao.getAll();
+          bufferedWriter.write(gson.toJson(orders) + "\n");
+          bufferedWriter.flush();
+        }
+        break;
+      case ("findOrderById"):{
+        Order order = orderDao.findById(queryDTO.getClientID());
+        bufferedWriter.write(gson.toJson(order) + "\n");
         bufferedWriter.flush();
       }
+      break;
+      case ("updateOrder"):{
+        orderDao.update(gson.fromJson(bufferedReader.readLine(), Order.class));
+      }
+      break;
+      case("getAllClients"):{
+        List<Client> clients = clientDao.getAll();
+        bufferedWriter.write(gson.toJson(clients) + "\n");
+        bufferedWriter.flush();
+      }
+      break;
+      case ("deleteClient"):{
+        clientDao.delete(gson.fromJson(bufferedReader.readLine(),Client.class));
+      }
+      break;
     }
   }
 }
