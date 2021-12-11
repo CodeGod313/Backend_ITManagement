@@ -75,6 +75,7 @@ public class ManagerService {
           }
           client.setPassword(pass);
           client.setOrders(null);
+          client.setMoney(0L);
           clientDao.save(client);
         }
         break;

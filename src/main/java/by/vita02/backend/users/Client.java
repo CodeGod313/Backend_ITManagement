@@ -5,6 +5,7 @@ import by.vita02.backend.enums.Role;
 import by.vita02.backend.order.Order;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class Client extends User {
 
   private String passportNumber;
+  private Long money;
   @OneToOne(cascade = CascadeType.ALL) private Company company;
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) private List<Order> orders = new ArrayList<>();
 
@@ -26,9 +28,18 @@ public class Client extends User {
     super(nickName, name, surname, emailAddr, Role.CLIENT);
     this.passportNumber = passportNumber;
     this.company = company;
+    money = 0L;
   }
 
   public Client() {}
+
+  public Long getMoney() {
+    return money;
+  }
+
+  public void setMoney(Long money) {
+    this.money = money;
+  }
 
   public String getPassportNumber() {
     return passportNumber;
