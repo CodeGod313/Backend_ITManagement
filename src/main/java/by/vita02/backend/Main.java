@@ -1,18 +1,14 @@
 package by.vita02.backend;
 
-import by.vita02.backend.enums.Role;
-import by.vita02.backend.order.Order;
 import by.vita02.backend.service.ManagerService;
-import by.vita02.backend.users.Admin;
-import by.vita02.backend.users.Client;
-import by.vita02.backend.utils.HibernateSessionFactoryUtil;
-import com.google.gson.Gson;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Main {
   private static ServerSocket serverSocket;
@@ -21,10 +17,10 @@ public class Main {
   public static void main(String[] args) {
     System.out.println("Старт сервера...");
     try {
-      serverSocket = new ServerSocket(8080);
+      serverSocket = new ServerSocket(readPortFromConfig());
       while (true) {
         clientSocket = serverSocket.accept();
-        System.out.println("Новое подключение. IP: "+ clientSocket.getInetAddress());
+        System.out.println("Новое подключение. IP: " + clientSocket.getInetAddress());
         Thread query =
             new Thread(
                 () -> {
@@ -37,5 +33,18 @@ public class Main {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  static int readPortFromConfig() {
+    Path path = Paths.get("src/main/resources/serverConfig.txt");
+    try {
+      List<String> lines = Files.lines(path).toList();
+      String portLine = lines.get(0);
+      String[] separatedLine = portLine.split("\\s+");
+      return Integer.parseInt(separatedLine[1]);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return -1;
   }
 }
