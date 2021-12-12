@@ -36,7 +36,7 @@ public class Popa {
   }
 
   static int readPortFromConfig() {
-    Path path = Paths.get("src/main/resources/serverConfig.txt");
+    Path path = Paths.get("../resources/serverConfig.txt");
     try {
       List<String> lines = Files.lines(path).toList();
       String portLine = lines.get(0);
