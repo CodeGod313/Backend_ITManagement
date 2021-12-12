@@ -11,3 +11,13 @@ a
 1src/main/java/by/vita02/backend/dto/QueryDTO.java,c\b\cb18114830bdf186d952301634a00ffb123fa57f
 _
 /src/main/java/by/vita02/backend/users/User.java,4\7\47a173df10a4d4f5376b4ba991473e2dd20d37b3
+n
+>src/main/java/by/vita02/backend/service/MethodRankService.java,7\0\70d34f049a60396d3efd3e02241c28414bb1d29f
+`
+0src/main/java/by/vita02/backend/users/Admin.java,c\7\c78ab063fe6bc33150d3800ab81c978ac538800e
+v
+Fsrc/main/java/by/vita02/backend/utils/HibernateSessionFactoryUtil.java,1\0\10e9097335b94439cf2dc3f105986a32292f1eea
+_
+/src/main/java/by/vita02/backend/enums/Role.java,c\8\c8fa961e9ec7e0b505d1533245c89f42ded00b7a
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
